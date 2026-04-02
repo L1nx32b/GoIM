@@ -1,7 +1,32 @@
-代码树
+### 后端技术栈
+
+| 组件 | 技术 |
+|------|------|
+| 框架 | Gin (Go) |
+| 数据库 ORM | GORM |
+| 缓存 | GoRedis |
+| 消息队列 | Kafka |
+| 实时通讯 | WebSocket |
+| 日志 | Zap |
+| 加密 | 自定义 AES |
+| 验证 | 阿里云短信 |
+
+### 前端技术栈
+
+| 组件 | 技术 |
+|------|------|
+| 框架 | Vue 3.2.13 |
+| 状态管理 | Vuex 4.0.0 |
+| 路由 | Vue Router 4.0.3 |
+| UI 库 | Element Plus 2.9.0 |
+| HTTP 客户端 | Axios 1.7.9 |
+| 实时通讯 | WebSocket API |
+| 包管理 | yarn |
+
+### 代码树
 ```TEXT
 GoChatServer/
-├── api/v1/  # url
+├── api/                             # url
 │   ├── user_info_controller.go      # 用户认证与资料
 │   ├── message_controller.go        # 消息获取与文件上传
 │   ├── group_info_controller.go     # 群组管理
@@ -36,13 +61,13 @@ GoChatServer/
 │   ├── constants/                   # 系统设置状态常量
 │   ├── enum/                        # 实体状态枚举定义
 │   ├── util/                        # 各种工具函数
-│   ├── zlog/                        # zaplog 日志封装
+│   ├── zaplog/                      # zaplog 日志封装
 │   └── ssl/                         # TLS 处理
 ├── configs/                         # 全局配置文件
 │   └── config.toml                  # 主配置
 ├── cmd/
-│   └── kama_chat_server/            # 应用入口
-│       └── main.go                  # 服务器初始化
+│   └── server/            # 应用入口
+│       └── main.go                  # 服务器启动
 └── web/chat-server/                 # Vue3 前端
     ├── src/
     │   ├── views/                  # 页面组件
