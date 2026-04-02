@@ -69,6 +69,12 @@ type Config struct {
 	LogConfig       `toml:"logConfig"`
 	KafkaConfig     `toml:"kafkaConfig"`
 	StaticSrcConfig `toml:"staticSrcConfig"`
+	EmailConfig     `toml:"EmailConfig"`
+}
+
+type EmailConfig struct {
+	Authcode string `toml:"authcode"`
+	Email    string `toml:"email"`
 }
 
 var config *Config
@@ -93,7 +99,6 @@ func LoadConfig() error {
 	}
 	return nil
 }
-
 
 func GetConfig() *Config {
 	if config == nil {

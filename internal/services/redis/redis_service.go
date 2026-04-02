@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"time"
 
-	myconfig "GoChatServer/internal/config"
+	"GoChatServer/internal/config"
 
-	zlog "GoChatServer/pkg/zaplog"
+	"GoChatServer/pkg/zaplog"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -26,7 +26,7 @@ var redisClient *redis.Client
 var ctx = context.Background()
 
 func init() {
-	conf := myconfig.GetConfig()
+	conf := config.GetConfig()
 	host := conf.RedisConfig.Host
 	port := conf.RedisConfig.Port
 	password := conf.RedisConfig.Password
@@ -54,7 +54,7 @@ func GetKey(key string) (string, error) {
 	value, err := redisClient.Get(ctx, key).Result()
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
-			zlog.Info("该key不存在")
+			zaplog.Info("该key不存在")
 			return "", nil
 		}
 		return "", err
@@ -84,15 +84,15 @@ func GetKeyWithPrefixNilIsErr(prefix string) (string, error) {
 		}
 
 		if len(keys) == 0 {
-			zlog.Info("没有找到相关前缀key")
+			zaplog.Info("没有找到相关前缀key")
 			return "", redis.Nil
 		}
 
 		if len(keys) == 1 {
-			zlog.Info(fmt.Sprintln("成功找到了相关前缀key", keys))
+			zaplog.Info(fmt.Sprintln("成功找到了相关前缀key", keys))
 			return keys[0], nil
 		} else {
-			zlog.Error("找到了数量大于1的key, 查找异常")
+			zaplog.Error("找到了数量大于1的key, 查找异常")
 			return "", errors.New("找到了数量大于1的key, 查找异常")
 		}
 	}
@@ -111,15 +111,15 @@ func GetKeyWithSuffixNilIsErr(suffix string) (string, error) {
 		}
 
 		if len(keys) == 0 {
-			zlog.Info("没有找到相关后缀key")
+			zaplog.Info("没有找到相关后缀key")
 			return "", redis.Nil
 		}
 
 		if len(keys) == 1 {
-			zlog.Info(fmt.Sprintln("成功找到了相关后缀key", keys))
+			zaplog.Info(fmt.Sprintln("成功找到了相关后缀key", keys))
 			return keys[0], nil
 		} else {
-			zlog.Error("找到了数量大于1的key，查找异常")
+			zaplog.Error("找到了数量大于1的key，查找异常")
 			return "", errors.New("找到了数量大于1的key，查找异常")
 		}
 	}

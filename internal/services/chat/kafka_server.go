@@ -24,38 +24,6 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// 分布式版（基于 Kafka 消息队列）
-
-/*
-	消息流转：移除了内部的 Transmit 通道，取而代之的是从 Kafka 中读取消息 (kafka.KafkaService.ChatReader.ReadMessage)。
-	优势：支持集群部署。前端发送消息时，可以通过 HTTP 接口或其他方式先将消息投递到 Kafka。
-	所有在线的 WebSocket 节点都会监听 Kafka。当节点从 Kafka 拿到消息后，会去自己的 Clients map 里找接收方是否在自己这台机器上，
-	如果在就通过 WebSocket 发送。这样就打破了单机内存的限制。
-
-	职责分离
-    登录登出：在主程序的 for { select {...} } 中专门处理 Login 和 Logout。
-    消息消费：单独开辟了一个后台协程 go func() { ... }() 用来死循环读取 Kafka 消息并处理业务逻辑。
-    这样解耦后，消息处理的耗时不会阻塞新用户的登录和下线操作
-
-	在 Start() 函数开头以及读取 Kafka 的子协程开头，都使用了 defer func() { if r := recover(); r != nil { ... } }()。
-	这保证了即使某一条非法的 Kafka 消息导致了代码异常，服务也不会崩溃，只是在日志中记录错误后继续运行。
-
-	在逻辑分支中增加了对文件类型 (message_type_enum.File) 的完整处理（包含发给单人 User 和 群组 Group 的逻辑），业务功能更加完整。
-
-	Login, Logout 使用了无缓冲的 Channel：make(chan *Client)。
-	在分布式下，单台机器的瞬时并发可能降低了，但无缓冲通道要求接收方和发送方必须同时准备好，严格来说，在高并发场景下依然建议加上缓冲大小。
-
-
-	TODO:
-	如果你的 Kafka 采用的是“发布/订阅 (广播)”模式（即所有节点都会收到同一条 Kafka 消息以寻找各自维护的连接）：
-	那么当一条消息发来时，所有的服务器节点都会尝试将这条消息写入 MySQL 和 Redis，导致数据严重重复插入或 Redis 锁冲突。
-
-	建议方案：在微服务架构下，写 MySQL 和 Redis 的操作应该放在 发送消息的 HTTP API 接口层。
-	API 层将数据入库后，再把消息包装好推入 Kafka；
-	而底层的 WebSocket 节点只负责做一件事：从 Kafka 取出消息 -> 匹配 k.Clients -> 推送给前端。
-	这样既能保证性能，又能避免分布式数据重复写入的问题。
-*/
-
 type KafkaServer struct {
 	Clients map[string]*Client
 	mutex   *sync.Mutex
@@ -492,8 +460,8 @@ func (k *KafkaServer) Start() {
 				k.mutex.Lock()
 				k.Clients[client.Uuid] = client
 				k.mutex.Unlock()
-				zaplog.Debug(fmt.Sprintf("欢迎来到kama聊天服务器，亲爱的用户%s\n", client.Uuid))
-				err := client.Conn.WriteMessage(websocket.TextMessage, []byte("欢迎来到kama聊天服务器"))
+				zaplog.Debug(fmt.Sprintf("欢迎来到聊天服务器，亲爱的用户%s\n", client.Uuid))
+				err := client.Conn.WriteMessage(websocket.TextMessage, []byte("欢迎来到聊天服务器"))
 				if err != nil {
 					zaplog.Error(err.Error())
 				}

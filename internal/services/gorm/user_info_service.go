@@ -4,14 +4,13 @@ import (
 	"GoChatServer/internal/dto/request"
 	"GoChatServer/internal/dto/respond"
 	"GoChatServer/internal/model"
-	dao "GoChatServer/internal/mysql"
+	"GoChatServer/internal/mysql"
 	myredis "GoChatServer/internal/services/redis"
 	"GoChatServer/internal/services/sms"
 	"GoChatServer/pkg/constants"
 	"GoChatServer/pkg/enum/user_info/user_status_enum.go"
 	"GoChatServer/pkg/util/random"
 	"GoChatServer/pkg/zaplog"
-	zlog "GoChatServer/pkg/zaplog"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -43,7 +42,7 @@ func (u *userInfoService) checkEmailValid(email string) bool {
 	pattern := `^[^\s@]+@[^\s@]+\.[^\s@]+$`
 	match, err := regexp.MatchString(pattern, email)
 	if err != nil {
-		zlog.Error(err.Error())
+		zaplog.Error(err.Error())
 	}
 	return match
 }
@@ -53,31 +52,31 @@ func (u *userInfoService) checkUserIsAdminOrNot(user model.UserInfo) int8 {
 	return user.IsAdmin
 }
 
-// Login登录(service+dao)
+// Login登录(service+mysql)
 func (u *userInfoService) Login(loginReq request.LoginRequest) (string, *respond.LoginRespond, int) {
 	// 获取前端传来的登录密码
 	password := loginReq.Password
 	// 接收查询数据库后的数据存储结构体
 	var user model.UserInfo
 	// 查询对应登录用户电话对应数据库数据
-	res := dao.GormDB.First(&user, "telephone = ?", loginReq.Telephone)
+	res := mysql.GormDB.First(&user, "telephone = ?", loginReq.Telephone)
 
 	// 如果查询错误
 	if res.Error != nil {
 		// 查不到数据
 		if errors.Is(res.Error, gorm.ErrRecordNotFound) {
 			message := "用户不存在, 请注册"
-			zlog.Error(message)
+			zaplog.Error(message)
 			return message, nil, -2
 		}
-		zlog.Error(res.Error.Error())
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, nil, -1
 	}
 
 	// 密码错误
 	if user.Password != password {
 		message := "密码不正确, 请重试!"
-		zlog.Error(message)
+		zaplog.Error(message)
 		return message, nil, -2
 	}
 
@@ -109,31 +108,31 @@ func (u *userInfoService) SendSmsCode(telephone string) (string, int) {
 // SmsLogin 验证码登录
 func (u *userInfoService) SmsLogin(req request.SmsLoginRequest) (string, *respond.LoginRespond, int) {
 	var user model.UserInfo
-	res := dao.GormDB.First(&user, "telephone = ?", req.Telephone)
+	res := mysql.GormDB.First(&user, "telephone = ?", req.Telephone)
 	if res.Error != nil {
 		if errors.Is(res.Error, gorm.ErrRecordNotFound) {
 			message := "用户不存在, 请注册"
-			zlog.Error(message)
+			zaplog.Error(message)
 			return message, nil, -2
 		}
-		zlog.Error(res.Error.Error())
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, nil, -1
 	}
 
 	key := "auth_code_" + req.Telephone
 	code, err := myredis.GetKey(key)
 	if err != nil {
-		zlog.Error(err.Error())
+		zaplog.Error(err.Error())
 		return constants.SYSTEM_ERROR, nil, -1
 	}
 
 	if code != req.SmsCode {
 		message := "验证码不正确, 请重新输入"
-		zlog.Info(message)
+		zaplog.Info(message)
 		return message, nil, -2
 	} else {
 		if err := myredis.DelKeyIfExists(key); err != nil {
-			zlog.Error(err.Error())
+			zaplog.Error(err.Error())
 			return constants.SYSTEM_ERROR, nil, -1
 		}
 	}
@@ -167,15 +166,15 @@ func (u *userInfoService) EmailLogin(Email string) {
 func (u *userInfoService) checkTelephoneExist(telephone string) (string, int) {
 	var user model.UserInfo
 	// gorm默认软删除
-	if res := dao.GormDB.Where("telephone = ?", telephone).First(&user); res.Error != nil {
+	if res := mysql.GormDB.Where("telephone = ?", telephone).First(&user); res.Error != nil {
 		if errors.Is(res.Error, gorm.ErrRecordNotFound) {
-			zlog.Info("该电话未被注册")
+			zaplog.Info("该电话未被注册")
 			return "", 0
 		}
-		zlog.Error(res.Error.Error())
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, -1
 	}
-	zlog.Info("该电话已经存在")
+	zaplog.Info("该电话已经存在")
 	return "该电话已经存在", -2
 }
 
@@ -184,16 +183,16 @@ func (u *userInfoService) Register(registerReq request.RegisterRequest) (string,
 	key := "auth_code_" + registerReq.Telephone
 	code, err := myredis.GetKey(key)
 	if err != nil {
-		zlog.Error(err.Error())
+		zaplog.Error(err.Error())
 		return constants.SYSTEM_ERROR, nil, -1
 	}
 	if code != registerReq.SmsCode {
 		message := "验证码不正确, 请重试!"
-		zlog.Info(message)
+		zaplog.Info(message)
 		return message, nil, -2
 	} else {
 		if err := myredis.DelKeyIfExists(key); err != nil {
-			zlog.Error(err.Error())
+			zaplog.Error(err.Error())
 			return constants.SYSTEM_ERROR, nil, -1
 		}
 	}
@@ -216,13 +215,13 @@ func (u *userInfoService) Register(registerReq request.RegisterRequest) (string,
 	// 手机号验证，最后一步才调用api，省钱hhh
 	//err := sms.VerificationCode(registerReq.Telephone)
 	//if err != nil {
-	//	zlog.Error(err.Error())
+	//	zaplog.Error(err.Error())
 	//	return "", err
 	//}
 
-	res := dao.GormDB.Create(&newUser)
+	res := mysql.GormDB.Create(&newUser)
 	if res.Error != nil {
-		zlog.Error(res.Error.Error())
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, nil, -1
 	}
 	// 注册成功，chat client建立
@@ -252,8 +251,8 @@ func (u *userInfoService) Register(registerReq request.RegisterRequest) (string,
 // 但是需要更新redis的user_info，因为可能影响用户搜索
 func (u *userInfoService) UpdateUserInfo(updateReq request.UpdateUserInfoRequest) (string, int) {
 	var user model.UserInfo
-	if res := dao.GormDB.First(&user, "uuid = ?", updateReq.Uuid); res.Error != nil {
-		zlog.Error(res.Error.Error())
+	if res := mysql.GormDB.First(&user, "uuid = ?", updateReq.Uuid); res.Error != nil {
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, -1
 	}
 	if updateReq.Email != "" {
@@ -272,8 +271,8 @@ func (u *userInfoService) UpdateUserInfo(updateReq request.UpdateUserInfoRequest
 		user.Avatar = updateReq.Avatar
 	}
 	// 更新用户信息
-	if res := dao.GormDB.Save(&user); res.Error != nil {
-		zlog.Error(res.Error.Error())
+	if res := mysql.GormDB.Save(&user); res.Error != nil {
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, -1
 	}
 	return "修改用户信息成功", 0
@@ -285,8 +284,8 @@ func (u *userInfoService) GetUserInfoList(ownerId string) (string, []respond.Get
 	// redis中没有数据，从数据库中取
 	var users []model.UserInfo
 	// 获取所有用户
-	if res := dao.GormDB.Unscoped().Where("uuid != ?", ownerId).Find(&users); res.Error != nil {
-		zlog.Error(res.Error.Error())
+	if res := mysql.GormDB.Unscoped().Where("uuid != ?", ownerId).Find(&users); res.Error != nil {
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, nil, -1
 	}
 	var rsp []respond.GetUserListRespond
@@ -312,20 +311,20 @@ func (u *userInfoService) GetUserInfoList(ownerId string) (string, []respond.Get
 // 用户是否启用禁用需要实时更新contact_user_list状态，所以redis的contact_user_list需要删除
 func (u *userInfoService) AbleUsers(uuidlist []string) (string, int) {
 	var users []model.UserInfo
-	if res := dao.GormDB.Model(model.UserInfo{}).Where("uuid in (?)", uuidlist).Find(&users); res.Error != nil {
-		zlog.Error(res.Error.Error())
+	if res := mysql.GormDB.Model(model.UserInfo{}).Where("uuid in (?)", uuidlist).Find(&users); res.Error != nil {
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, -1
 	}
 	for _, user := range users {
 		user.Status = user_status_enum.NORMAL
-		if res := dao.GormDB.Save(&user); res.Error != nil {
-			zlog.Error(res.Error.Error())
+		if res := mysql.GormDB.Save(&user); res.Error != nil {
+			zaplog.Error(res.Error.Error())
 			return constants.SYSTEM_ERROR, -1
 		}
 	}
 	// 删除redis缓存中所有"contact_user_list"开头的key
 	//if err := myredis.DelKeysWithPrefix("contact_user_list"); err != nil {
-	//	zlog.Error(err.Error())
+	//	zaplog.Error(err.Error())
 	//}
 
 	return "启用用户成功", 0
@@ -335,19 +334,19 @@ func (u *userInfoService) AbleUsers(uuidlist []string) (string, int) {
 // 用户是否启用禁用需要实时更新contact_user_list状态，所以redis的contact_user_list需要删除
 func (u *userInfoService) DisableUsers(uuidlist []string) (string, int) {
 	var users []model.UserInfo
-	if res := dao.GormDB.Model(model.UserInfo{}).Where("uuid in (?)", uuidlist).Find(&users); res.Error != nil {
-		zlog.Error(res.Error.Error())
+	if res := mysql.GormDB.Model(model.UserInfo{}).Where("uuid in (?)", uuidlist).Find(&users); res.Error != nil {
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, -1
 	}
 	for _, user := range users {
 		user.Status = user_status_enum.DISABLE
-		if res := dao.GormDB.Save(&user); res.Error != nil {
-			zlog.Error(res.Error.Error())
+		if res := mysql.GormDB.Save(&user); res.Error != nil {
+			zaplog.Error(res.Error.Error())
 			return constants.SYSTEM_ERROR, -1
 		}
 		var sessionList []model.Session
-		if res := dao.GormDB.Where("send_id = ? OR receive_id = ?", user.Uuid, user.Uuid).Find(&sessionList); res.Error != nil {
-			zlog.Error(res.Error.Error())
+		if res := mysql.GormDB.Where("send_id = ? OR receive_id = ?", user.Uuid, user.Uuid).Find(&sessionList); res.Error != nil {
+			zaplog.Error(res.Error.Error())
 			return constants.SYSTEM_ERROR, -1
 		}
 		for _, session := range sessionList {
@@ -355,15 +354,15 @@ func (u *userInfoService) DisableUsers(uuidlist []string) (string, int) {
 			deletedAt.Time = time.Now()
 			deletedAt.Valid = true
 			session.DeletedAt = deletedAt
-			if res := dao.GormDB.Save(&session); res.Error != nil {
-				zlog.Error(res.Error.Error())
+			if res := mysql.GormDB.Save(&session); res.Error != nil {
+				zaplog.Error(res.Error.Error())
 				return constants.SYSTEM_ERROR, -1
 			}
 		}
 	}
 	// 删除redis缓存中所有'contact_user_list'开头的key
 	// if err := myredis.DelKeysWithPrefix("contact_user_list"); err != nil {
-	// 	zlog.Error(err.Error())
+	// 	zaplog.Error(err.Error())
 	// }
 
 	return "禁用用户成功", 0
@@ -373,25 +372,25 @@ func (u *userInfoService) DisableUsers(uuidlist []string) (string, int) {
 // 用户是否启用禁用需要实时更新contact_user_list状态, 所以redis的contact_user_list需要删除
 func (u *userInfoService) DeleteUsers(uuidList []string) (string, int) {
 	var users []model.UserInfo
-	if res := dao.GormDB.Model(model.UserInfo{}).Where("uuid in (?)", uuidList).Find(&users); res.Error != nil {
-		zlog.Error(res.Error.Error())
+	if res := mysql.GormDB.Model(model.UserInfo{}).Where("uuid in (?)", uuidList).Find(&users); res.Error != nil {
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, -1
 	}
 	for _, user := range users {
 		user.DeletedAt.Valid = true
 		user.DeletedAt.Time = time.Now()
-		if res := dao.GormDB.Save(&user); res.Error != nil {
-			zlog.Error(res.Error.Error())
+		if res := mysql.GormDB.Save(&user); res.Error != nil {
+			zaplog.Error(res.Error.Error())
 			return constants.SYSTEM_ERROR, -1
 		}
 
 		// 删除会话
 		var sessionList []model.Session
-		if res := dao.GormDB.Where("send_id = ? OR receive_id = ?", user.Uuid, user.Uuid).Find(&sessionList); res.Error != nil {
+		if res := mysql.GormDB.Where("send_id = ? OR receive_id = ?", user.Uuid, user.Uuid).Find(&sessionList); res.Error != nil {
 			if errors.Is(res.Error, gorm.ErrRecordNotFound) {
-				zlog.Info(res.Error.Error())
+				zaplog.Info(res.Error.Error())
 			} else {
-				zlog.Error(res.Error.Error())
+				zaplog.Error(res.Error.Error())
 				return constants.SYSTEM_ERROR, -1
 			}
 		}
@@ -401,19 +400,19 @@ func (u *userInfoService) DeleteUsers(uuidList []string) (string, int) {
 			deletedAt.Time = time.Now()
 			deletedAt.Valid = true
 			session.DeletedAt = deletedAt
-			if res := dao.GormDB.Save(&session); res.Error != nil {
-				zlog.Error(res.Error.Error())
+			if res := mysql.GormDB.Save(&session); res.Error != nil {
+				zaplog.Error(res.Error.Error())
 				return constants.SYSTEM_ERROR, -1
 			}
 		}
 
 		// 删除联系人
 		var contactList []model.UserContact
-		if res := dao.GormDB.Where("user_id = ? OR contact_id = ?", user.Uuid, user.Uuid).Find(&contactList); res.Error != nil {
+		if res := mysql.GormDB.Where("user_id = ? OR contact_id = ?", user.Uuid, user.Uuid).Find(&contactList); res.Error != nil {
 			if errors.Is(res.Error, gorm.ErrRecordNotFound) {
-				zlog.Info(res.Error.Error())
+				zaplog.Info(res.Error.Error())
 			} else {
-				zlog.Error(res.Error.Error())
+				zaplog.Error(res.Error.Error())
 				return constants.SYSTEM_ERROR, -1
 			}
 		}
@@ -422,19 +421,19 @@ func (u *userInfoService) DeleteUsers(uuidList []string) (string, int) {
 			deletedAt.Time = time.Now()
 			deletedAt.Valid = true
 			contact.DeletedAt = deletedAt
-			if res := dao.GormDB.Save(&contact); res.Error != nil {
-				zlog.Error(res.Error.Error())
+			if res := mysql.GormDB.Save(&contact); res.Error != nil {
+				zaplog.Error(res.Error.Error())
 				return constants.SYSTEM_ERROR, -1
 			}
 		}
 
 		// 删除申请记录
 		var applyList []model.ContactApply
-		if res := dao.GormDB.Where("user_id = ? or contact_id = ?", user.Uuid, user.Uuid).Find(&applyList); res.Error != nil {
+		if res := mysql.GormDB.Where("user_id = ? or contact_id = ?", user.Uuid, user.Uuid).Find(&applyList); res.Error != nil {
 			if errors.Is(res.Error, gorm.ErrRecordNotFound) {
-				zlog.Info(res.Error.Error())
+				zaplog.Info(res.Error.Error())
 			} else {
-				zlog.Error(res.Error.Error())
+				zaplog.Error(res.Error.Error())
 				return constants.SYSTEM_ERROR, -1
 			}
 		}
@@ -443,15 +442,15 @@ func (u *userInfoService) DeleteUsers(uuidList []string) (string, int) {
 			deletedAt.Time = time.Now()
 			deletedAt.Valid = true
 			apply.DeletedAt = deletedAt
-			if res := dao.GormDB.Save(&apply); res.Error != nil {
-				zlog.Error(res.Error.Error())
+			if res := mysql.GormDB.Save(&apply); res.Error != nil {
+				zaplog.Error(res.Error.Error())
 				return constants.SYSTEM_ERROR, -1
 			}
 		}
 	}
 	// 删除所有"contact_user_list"开头的key
 	//if err := myredis.DelKeysWithPrefix("contact_user_list"); err != nil {
-	//	zlog.Error(err.Error())
+	//	zaplog.Error(err.Error())
 	//}
 	return "删除用户成功", 0
 }
@@ -459,14 +458,14 @@ func (u *userInfoService) DeleteUsers(uuidList []string) (string, int) {
 // GetUserInfo 获取用户信息
 func (u *userInfoService) GetUserInfo(uuid string) (string, *respond.GetUserInfoRespond, int) {
 	// redis
-	zlog.Info(uuid)
+	zaplog.Info(uuid)
 	rspString, err := myredis.GetKeyNilIsErr("user_info_" + uuid)
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
-			zlog.Info(err.Error())
+			zaplog.Info(err.Error())
 			var user model.UserInfo
-			if res := dao.GormDB.Where("uuid = ?", uuid).Find(&user); res.Error != nil {
-				zlog.Error(res.Error.Error())
+			if res := mysql.GormDB.Where("uuid = ?", uuid).Find(&user); res.Error != nil {
+				zaplog.Error(res.Error.Error())
 				return constants.SYSTEM_ERROR, nil, -1
 			}
 			rsp := respond.GetUserInfoRespond{
@@ -484,13 +483,13 @@ func (u *userInfoService) GetUserInfo(uuid string) (string, *respond.GetUserInfo
 			}
 			return "获取用户信息成功", &rsp, 0
 		} else {
-			zlog.Error(err.Error())
+			zaplog.Error(err.Error())
 			return constants.SYSTEM_ERROR, nil, -1
 		}
 	}
 	var rsp respond.GetUserInfoRespond
 	if err := json.Unmarshal([]byte(rspString), &rsp); err != nil {
-		zlog.Error(err.Error())
+		zaplog.Error(err.Error())
 	}
 	return "获取用户信息成功", &rsp, 0
 }
@@ -498,14 +497,14 @@ func (u *userInfoService) GetUserInfo(uuid string) (string, *respond.GetUserInfo
 // SetAdmin 设置管理员
 func (u *userInfoService) SetAdmin(uuidList []string, isAdmin int8) (string, int) {
 	var users []model.UserInfo
-	if res := dao.GormDB.Where("uuid in (?)", uuidList).Find(&users); res.Error != nil {
-		zlog.Error(res.Error.Error())
+	if res := mysql.GormDB.Where("uuid in (?)", uuidList).Find(&users); res.Error != nil {
+		zaplog.Error(res.Error.Error())
 		return constants.SYSTEM_ERROR, -1
 	}
 	for _, user := range users {
 		user.IsAdmin = isAdmin
-		if res := dao.GormDB.Save(&user); res.Error != nil {
-			zlog.Error(res.Error.Error())
+		if res := mysql.GormDB.Save(&user); res.Error != nil {
+			zaplog.Error(res.Error.Error())
 			return constants.SYSTEM_ERROR, -1
 		}
 	}

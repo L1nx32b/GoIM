@@ -37,3 +37,7 @@ timeout = 1 # 单位秒
 [staticSrcConfig]
 staticAvatarPath = "./static/avatars"
 staticFilePath = "./static/files"
+
+[EmailConfig]
+Email = "your email"
+authcode = "your authcode"

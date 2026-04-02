@@ -5,7 +5,7 @@ import (
 	"GoChatServer/internal/model"
 	"fmt"
 
-	zlog "GoChatServer/pkg/zaplog"
+	"GoChatServer/pkg/zaplog"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -29,12 +29,12 @@ func init() {
 	// 初始化GORM数据库连接
 	GormDB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		zlog.Fatal(err.Error())
+		zaplog.Fatal(err.Error())
 	}
 
 	// 自动迁移数据表
 	err = GormDB.AutoMigrate(&model.UserInfo{}, &model.GroupInfo{}, &model.UserContact{}, &model.Session{}, &model.ContactApply{}, &model.Message{}) // 自动迁移，如果没有建表，会自动创建对应的表
 	if err != nil {
-		zlog.Fatal(err.Error())
+		zaplog.Fatal(err.Error())
 	}
 }
