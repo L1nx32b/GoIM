@@ -73,7 +73,7 @@
             <template #append>
               <el-button
                 @click="sendSmsCode"
-                style="background-color: rgb(229, 132, 132); color: #ffffff"
+                style="background-color: #DAA520; border: 4px solid #8B7355; color: #FFF; font-family: 'Courier New', monospace; image-rendering: pixelated; box-shadow: 4px 4px 0px #8B7355;"
                 >点击发送</el-button
               >
             </template>
@@ -236,20 +236,25 @@ export default {
 <style>
 .register-wrap {
   height: 100vh;
-  background-image: url("@/assets/img/chat_server_background.jpg");
+  background-color: #FFF8E7; /* 米黄色背景 */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  font-family: 'Courier New', monospace; /* 像素风格字体 */
+  image-rendering: pixelated;
 }
 
 .register-window {
-  background-color: rgb(255, 255, 255, 0.7);
+  background-color: rgba(255, 254, 240, 0.9); /* 浅米黄色半透明 */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 30px 50px;
-  border-radius: 20px;
+  border-radius: 8px; /* 像素风格圆角 */
+  border: 4px solid #8B7355; /* 像素边框 */
+  box-shadow: 8px 8px 0px #8B7355; /* 像素阴影 */
+  image-rendering: pixelated;
 }
 
 .register-item {
@@ -267,10 +272,20 @@ export default {
 
 .register-btn,
 .register-btn:hover {
-  background-color: rgb(229, 132, 132);
-  border: none;
-  color: #ffffff;
+  background-color: #DAA520; /* 金黄 */
+  border: 4px solid #8B7355; /* 像素边框 */
+  color: #FFF;
   font-weight: bold;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  image-rendering: pixelated;
+  box-shadow: 4px 4px 0px #8B7355;
+}
+
+.register-btn:hover {
+  background-color: #B8860B;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #8B7355;
 }
 
 .el-alert {
@@ -288,10 +303,18 @@ export default {
   background-color: rgba(255, 255, 255, 0);
   border: none;
   cursor: pointer;
-  color: #d65b54;
+  color: #8B7355; /* 棕色 */
   font-weight: bold;
+  font-family: 'Courier New', monospace;
   text-decoration: underline;
   text-underline-offset: 0.2em;
   margin-left: 10px;
+  image-rendering: pixelated;
+}
+
+.go-sms-login-btn:hover,
+.go-password-login-btn:hover {
+  color: #DAA520; /* 金黄 */
+  transform: translate(2px, 2px);
 }
 </style>

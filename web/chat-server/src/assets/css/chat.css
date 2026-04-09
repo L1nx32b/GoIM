@@ -1,30 +1,46 @@
+/* 全局米黄色像素风格 */
+body {
+  background-color: #F9F7F5; /* 匹配图片的浅米色底色 */
+  background-image: 
+    linear-gradient(#EBE9E7 1px, transparent 1px), /* 水平网格线（极浅灰色1像素） */
+    linear-gradient(90deg, #EBE9E7 1px, transparent 1px); /* 垂直网格线（极浅灰色1像素） */
+  background-size: 24px 24px; /* 网格大小（像素格子尺寸），可调整 */
+
+  font-family: "BoutiqueBitmap",monospace;/* 像素风格字体 */
+  image-rendering: pixelated; /* 像素化渲染 */
+  margin: 0;
+  padding: 0;
+}
+
 .chat-wrap {
     height: 100vh;
-    /* background-image: url("@/assets/img/chat_server_background.jpg"); */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .chat-window {
-    background-color: rgb(255, 255, 255);
+    background-color: #FFFEF0; /* 浅米黄色 */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     position: fixed;
     width: 1000px;
     height: 600px;
-    border-radius: 30px;
+    border-radius: 8px; /* 更小的圆角，更像素化 */
+    border: 4px solid #8B7355; /* 棕色像素边框 */
+    box-shadow: 8px 8px 0px #8B7355; /* 像素阴影 */
+    image-rendering: pixelated;
 }
 
 .chat-window-container {
     height: 100%;
-    border-radius: 30px;
+    border-radius: 8px; /* 匹配像素风格 */
 }
 
 .aside-container {
     width: 30%;
-    border-right: 3px solid #ccc;
+    border-right: 2px solid #8B7355;
     display: flex;
     flex-direction: row;
 }
@@ -35,24 +51,26 @@
 
 .main-container {
     padding: 0;
-    border-top: 3px solid #ccc;
+    border-top: 4px solid #8B7355; /* 像素边框 */
     height: 62%;
 }
 
 .el-footer {
     padding: 0;
-    border-top: 3px solid #ccc;
+    border-top: 4px solid #8B7355; /* 像素边框 */
     height: 30%;
     display: flex;
     flex-direction: row;
 }
 
 .navigation-bar {
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-    background-color: rgb(252, 210.9, 210.9);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    background-color: #E6D8AD; /* 米黄色 */
     width: 25%;
     height: 100%;
+    border-right: 2px solid #8B7355; /* 像素边框 */
+    image-rendering: pixelated;
 }
 
 .up-bar {
@@ -98,9 +116,11 @@
 
 .tool-bar {
     height: 10%;
-    background-color: rgb(252, 210.9, 210.9);
+    background-color: #E6D8AD; /* 米黄色 */
     display: flex;
     flex-direction: row;
+    border-top: 3px solid #8B7355; /* 像素边框 */
+    image-rendering: pixelated;
 }
 
 .tool-bar-left {
@@ -120,8 +140,20 @@
 .send-btn {
     height: 20%;
     width: 100%;
-    background-color: rgb(252, 210.9, 210.9);
-    border-bottom-right-radius: 30px;
+    background-color: #DAA520; /* 金黄 */
+    border-bottom-right-radius: 8px;
+    border: 4px solid #8B7355; /* 像素边框 */
+    color: #FFF;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    image-rendering: pixelated;
+    box-shadow: 4px 4px 0px #8B7355;
+}
+
+.send-btn:hover {
+    background-color: #B8860B;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #8B7355;
 }
 
 .chat-send {
@@ -182,25 +214,49 @@
 .edit-btn {
     height: 8%;
     width: 100%;
-    background-color: rgb(252, 210.9, 210.9);
-    border-bottom-right-radius: 30px;
+    background-color: #DAA520; /* 金黄 */
+    border-bottom-right-radius: 8px;
+    border: 4px solid #8B7355; /* 像素边框 */
+    color: #FFF;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    image-rendering: pixelated;
+    box-shadow: 4px 4px 0px #8B7355;
+}
+
+.edit-btn:hover {
+    background-color: #B8860B;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #8B7355;
 }
 
 .el-popper.is-customized {
     /* Set padding to ensure the height is 32px */
     padding: 6px 12px;
-    /*background: linear-gradient(90deg, rgb(244, 154, 162), rgb(250, 193, 211));*/
-    background: rgb(250, 183, 183);
+    background: #E6D8AD; /* 米黄色 */
+    border: 4px solid #8B7355; /* 像素边框 */
+    image-rendering: pixelated;
 }
 
 .el-popper.is-customized .el-popper__arrow::before {
-    /*background: rgb(244, 154, 162);*/
-    background: rgb(250, 183, 183);
+    background: #E6D8AD; /* 米黄色 */
 }
 
 
 .modal-close-btn {
-    background-color: rgb(252, 210.9, 210.9);
-    border-radius: 6px;
+    background-color: #DAA520; /* 金黄 */
+    border-radius: 4px;
+    border: 4px solid #8B7355; /* 像素边框 */
+    color: #FFF;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    image-rendering: pixelated;
+    box-shadow: 4px 4px 0px #8B7355;
+}
+
+.modal-close-btn:hover {
+    background-color: #B8860B;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #8B7355;
 }
 

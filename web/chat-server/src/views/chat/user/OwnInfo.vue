@@ -9,7 +9,6 @@
       <el-container class="chat-window-container">
         <el-aside class="aside-container">
           <NavigationModal></NavigationModal>
-          <ContactListModal></ContactListModal>
         </el-aside>
         <div class="owner-info-window">
           <div class="my-homepage-title"><h2>我的主页</h2></div>
@@ -103,7 +102,7 @@
                     >
                       <template #trigger>
                         <el-button
-                          style="background-color: rgb(252, 210.9, 210.9)"
+                          style="background-color: #DAA520; border: 4px solid #8B7355; color: #FFF; font-family: 'Courier New', monospace; image-rendering: pixelated; box-shadow: 4px 4px 0px #8B7355;"
                           >上传图片</el-button
                         >
                       </template>
@@ -294,11 +293,16 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #FFFEF0; /* 浅米黄色 */
+  border: 2px solid #8B7355; /* 像素边框 */
+  padding: 16px;
+  image-rendering: pixelated;
 }
 
 .owner-prefix {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'BoutiqueBitmap', monospace; /* 像素字体 */
   margin: 6px;
+  color: #8B7355; /* 棕色 */
 }
 
 .owner-opt {
@@ -314,8 +318,8 @@ export default {
 }
 
 h3 {
-  font-family: Arial, Helvetica, sans-serif;
-  color: rgb(69, 69, 68);
+  font-family: 'BoutiqueBitmap', monospace; /* 像素字体 */
+  color: #8B7355; /* 棕色 */
 }
 
 .modal-quit-btn-container {
@@ -326,14 +330,24 @@ h3 {
 }
 
 .modal-quit-btn {
-  background-color: rgba(255, 255, 255, 0);
-  color: rgb(229, 25, 25);
+  background-color: #DAA520; /* 金黄 */
+  color: #FFF;
   padding: 15px;
-  border: none;
+  border: 4px solid #8B7355; /* 像素边框 */
   cursor: pointer;
   position: fixed;
   justify-content: center;
   align-items: center;
+  font-family: 'BoutiqueBitmap', monospace;
+  image-rendering: pixelated;
+  box-shadow: 4px 4px 0px #8B7355;
+  border-radius: 4px;
+}
+
+.modal-quit-btn:hover {
+  background-color: #B8860B;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #8B7355;
 }
 
 .modal-header {
@@ -343,6 +357,10 @@ h3 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #FFFEF0; /* 浅米黄色 */
+  border: 4px solid #8B7355; /* 像素边框 */
+  border-radius: 4px;
+  image-rendering: pixelated;
 }
 
 .modal-body {
@@ -352,6 +370,11 @@ h3 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #FFF; /* 白色 */
+  border: 4px solid #8B7355; /* 像素边框 */
+  border-radius: 4px;
+  margin-top: 8px;
+  image-rendering: pixelated;
 }
 
 .modal-footer {
@@ -360,6 +383,11 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #FFFEF0; /* 浅米黄色 */
+  border: 4px solid #8B7355; /* 像素边框 */
+  border-radius: 4px;
+  margin-top: 8px;
+  image-rendering: pixelated;
 }
 
 .modal-header-title {
@@ -368,20 +396,33 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Courier New', monospace; /* 像素字体 */
+  color: #8B7355; /* 棕色 */
 }
 
 h2 {
   margin-bottom: 20px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Courier New', monospace; /* 像素字体 */
+  color: #8B7355; /* 棕色 */
 }
 
 .el-menu {
-  background-color: rgb(252, 210.9, 210.9);
+  background-color: #FFFEF0; /* 浅米黄色 */
   width: 101%;
+  border: 4px solid #8B7355; /* 像素边框 */
+  border-radius: 4px;
+  image-rendering: pixelated;
 }
 
 .el-menu-item {
-  background-color: rgb(255, 255, 255);
+  background-color: #FFF; /* 白色 */
   height: 45px;
+  border-bottom: 4px solid #8B7355; /* 像素底部边框 */
+  font-family: 'Courier New', monospace;
+  image-rendering: pixelated;
+}
+
+.el-menu-item:last-child {
+  border-bottom: none; /* 最后一个项目无边框 */
 }
 </style>

@@ -2351,7 +2351,7 @@ export default {
 }
 
 .el-menu {
-  background-color: rgb(252, 210.9, 210.9);
+  background-color: #FFFEF0;
   width: 100%;
 }
 
@@ -2433,7 +2433,7 @@ h3 {
   width: 50%;
   height: 100%;
   margin-right: 10px;
-  color: rgb(201, 139, 139);
+  color: #FFFEF0;
 }
 
 .sessionlist-avatar {
@@ -2446,7 +2446,7 @@ h3 {
   background-color: rgba(255, 255, 255, 0);
   border: none;
   cursor: pointer;
-  color: rgb(201, 139, 139);
+  color: #FFFEF0;
 }
 
 .modal-list {

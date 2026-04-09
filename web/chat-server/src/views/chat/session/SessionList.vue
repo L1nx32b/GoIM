@@ -17,6 +17,8 @@
                 placeholder="搜索会话"
                 size="small"
                 suffix-icon="Search"
+                :prefix-icon="''" 
+                clearable="false"
               />
             </div>
             <div class="contactlist-body">
@@ -93,7 +95,7 @@
                     >
                       <path
                         d="M504.32 31.872a472.256 472.256 0 1 1 0 944.512 472.256 472.256 0 0 1 0-944.512z m0 63.36a408.96 408.96 0 1 0 0 817.856 408.96 408.96 0 0 0 0-817.92z m228.864 487.808v0.192a217.856 217.856 0 1 1-435.712 0V583.04h435.712zM370.496 321.536a73.024 73.024 0 1 1 0 146.048 73.024 73.024 0 0 1 0-146.048z m289.664 0a73.024 73.024 0 1 1 0 146.048 73.024 73.024 0 0 1 0-146.048z"
-                        fill="#2c2c2c"
+                        fill="#8B7355"
                         p-id="1556"
                       ></path>
                     </svg>
@@ -183,7 +185,7 @@
                     >
                       <path
                         d="M394.666667 106.666667h448a74.666667 74.666667 0 0 1 74.666666 74.666666v448a74.666667 74.666667 0 0 1-74.666666 74.666667H394.666667a74.666667 74.666667 0 0 1-74.666667-74.666667V181.333333a74.666667 74.666667 0 0 1 74.666667-74.666666z m0 64a10.666667 10.666667 0 0 0-10.666667 10.666666v448a10.666667 10.666667 0 0 0 10.666667 10.666667h448a10.666667 10.666667 0 0 0 10.666666-10.666667V181.333333a10.666667 10.666667 0 0 0-10.666666-10.666666H394.666667z m245.333333 597.333333a32 32 0 0 1 64 0v74.666667a74.666667 74.666667 0 0 1-74.666667 74.666666H181.333333a74.666667 74.666667 0 0 1-74.666666-74.666666V394.666667a74.666667 74.666667 0 0 1 74.666666-74.666667h74.666667a32 32 0 0 1 0 64h-74.666667a10.666667 10.666667 0 0 0-10.666666 10.666667v448a10.666667 10.666667 0 0 0 10.666666 10.666666h448a10.666667 10.666667 0 0 0 10.666667-10.666666v-74.666667z"
-                        fill="#000000"
+                        fill="#8B7355"
                         p-id="3443"
                       ></path>
                     </svg>
@@ -211,7 +213,7 @@
                     >
                       <path
                         d="M790.207709 1023.317561c-100.48917-0.05687-302.832389-33.89448-528.321671-260.00933C-57.722981 442.903032-9.212929 154.458736 25.02277 119.995557L114.194824 30.709763c19.506387-19.563257 47.372654-30.709763 76.319449-30.709763 28.662446 0 56.073753 10.975897 75.23892 30.141064l3.980896 4.606465 131.881373 176.865489c35.145618 52.377208 33.32578 108.564701-4.720205 146.781295l-39.012773 39.069643c11.942686 71.087415 42.31123 113.398645 87.181606 158.439632l5.686993 5.686993c51.865378 52.092858 96.678885 97.076974 174.021993 103.730756l38.899033-38.955903a99.522381 99.522381 0 0 1 71.883595-30.368544c24.169721 0 49.419971 8.41675 73.020993 24.340331l178.002888 133.303121c21.212485 14.558703 34.918138 38.728424 37.477285 66.253471a113.853604 113.853604 0 0 1-33.26891 89.513274l-89.058314 89.285793c-22.179274 22.236144-85.304898 24.624681-111.465068 24.624681h-0.056869zM190.628013 88.091525a19.278907 19.278907 0 0 0-13.421304 5.402644L94.290348 176.63801c-4.549595 22.861713-44.984116 247.554815 230.607575 523.885815 202.684439 203.196268 377.50261 233.507942 463.774297 233.507942 30.652893 0 50.898589-3.753416 58.121071-5.402643l80.982784-82.006443a26.160169 26.160169 0 0 0 7.67744-18.539598l-178.457847-135.293568c-4.151505-2.786627-12.568255-7.677441-20.302566-7.677441a13.478174 13.478174 0 0 0-10.009108 3.980895l-65.969121 66.196601-18.653338-0.17061c-125.227591-1.080529-193.812729-69.950017-254.322337-130.743974l-5.686993-5.630123c-52.490947-52.661557-102.763968-117.20893-115.445963-232.199934l-2.388537-21.155614L333.826502 295.609908c8.41675-8.41675 1.990448-22.349883-4.833944-32.586471L200.750861 91.105631a17.515939 17.515939 0 0 0-10.122848-3.014106z m350.603132 312.159058c-44.131067 0-79.959125-34.235699-79.959125-76.319449V170.609797c0-42.08375 35.828057-76.376319 79.959125-76.376319h292.311452c37.136066 0 68.812618 77.968677 77.627457 111.863156 8.1324-4.606465 14.103743-8.07553 15.923581-9.269799 8.75797-5.743863 18.937687-62.670665 29.458625-62.670665a53.457736 53.457736 0 0 1 25.36399 6.426303 56.130623 56.130623 0 0 1 29.003666 49.87493v121.303566c0 21.496834-11.373986 40.775741-29.572365 50.443629a52.547817 52.547817 0 0 1-24.681551 6.141953c-10.577807 0-21.041875-56.983672-29.970454-62.955015-2.331667-1.421748-8.814839-5.118294-17.686549-10.179718-11.089637 30.368544-41.515051 105.038765-75.40953 105.038765H541.231145z m283.326003-88.944574V183.178052H550.273464v128.127957h274.283684z"
-                        fill="#666666"
+                        fill="#8B7355"
                         p-id="4493"
                       ></path>
                     </svg>
@@ -367,38 +369,97 @@ export default {
 </script>
 
 <style scoped>
+.sessionlist-container {
+  height: 100%;
+  width: 74%;
+  padding: 0 8px; /* 仅保留左右少量内边距，不影响宽度 */
+  box-sizing: border-box;
+}
+
+
 .sessionlist-header {
   display: flex;
   flex-direction: row;
-  width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
+  padding: 8px;
+  /* 新增：添加边框+独立背景，与下方menu区分 */
+  border: 2px solid #8B7355;
+  border-radius: 2px;
+  background-color: #F9F7F5; /* 匹配整体网格背景色 */
+  image-rendering: pixelated;
 }
 
 .contact-search-input {
-  width: 215px;
-  height: 30px;
-  margin-left: 5px;
-  margin-right: 2px;
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  background-color: #f1e8d6;
+  border: 2px solid #8B7355;
+  border-radius: 2px;
+  padding: 0 8px;
+  font-family: 'Courier New', monospace;
+  color: #6b5843;
+  image-rendering: pixelated;
+  box-sizing: border-box;
+}
+
+/* 聚焦样式 - 保持像素风格，微调边框色 */
+.contact-search-input:focus {
+  outline: none;
+  border-color: #8B7355;
+}
+
+/* 可选：搜索框占位符样式（匹配图片的浅文字效果） */
+.contact-search-input::placeholder {
+  color: #a68e73;
+  opacity: 1;
 }
 
 .el-menu {
-  background-color: rgb(252, 210.9, 210.9);
-  width: 100%;
+  background-color: #FFFEF0; /* 浅米黄色 */
+  width: 100% !important; /* 强制占满父容器 */
+  border: 2px solid #8B7355; /* 细棕色边框 */
+  border-radius: 2px;
+  image-rendering: pixelated;
+  padding: 0 !important; /* 清除默认内边距 */
+  margin: 0 0 8px 0; /* 仅保留上下间距，无左右边距 */
+  box-sizing: border-box;
 }
 
 .el-menu-item {
-  background-color: rgb(255, 255, 255);
+  background-color: #FFFFFF;
   height: 45px;
+  line-height: 45px;
+  border-bottom: 2px solid #8B7355;
+  border-left: none;
+  border-right: none;
+  font-family: 'Courier New', monospace;
+  color: #333333;
+  padding-left: 12px !important;
+  margin: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  image-rendering: pixelated;
+}
+
+.el-menu-item:last-child {
+  border-bottom: none; /* 最后一个项目无边框 */
 }
 
 .sessionlist-title {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'BoutiqueBitmap', monospace; /* 像素字体 */
+  width: 100% !important;
+  padding-left: 12px !important;
+  border-bottom: 2px solid #8B7355;
+  height: 45px;
+  line-height: 45px;
+  box-sizing: border-box;
 }
 
 h3 {
-  font-family: Arial, Helvetica, sans-serif;
-  color: rgb(69, 69, 68);
+  font-family: 'BoutiqueBitmap', monospace; /* 像素字体 */
+  color: #8B7355; /* 棕色 */
 }
 
 .modal-quit-btn-container {
@@ -409,14 +470,24 @@ h3 {
 }
 
 .modal-quit-btn {
-  background-color: rgba(255, 255, 255, 0);
-  color: rgb(229, 25, 25);
+  background-color: #DAA520; /* 金黄 */
+  color: #FFF;
   padding: 15px;
-  border: none;
+  border: 4px solid #8B7355; /* 像素边框 */
   cursor: pointer;
   position: fixed;
   justify-content: center;
   align-items: center;
+  font-family: 'Courier New', monospace;
+  image-rendering: pixelated;
+  box-shadow: 4px 4px 0px #8B7355;
+  border-radius: 4px;
+}
+
+.modal-quit-btn:hover {
+  background-color: #B8860B;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #8B7355;
 }
 
 .modal-header {
@@ -426,12 +497,20 @@ h3 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /*background-color:aqua;*/
+  background-color: #FFFEF0; /* 浅米黄色 */
+  border: 4px solid #8B7355; /* 像素边框 */
+  border-radius: 4px;
+  image-rendering: pixelated;
 }
 
 .modal-body {
   height: 55%;
   width: 400px;
+  background-color: #FFF; /* 白色 */
+  border: 4px solid #8B7355; /* 像素边框 */
+  border-radius: 4px;
+  margin-top: 8px;
+  image-rendering: pixelated;
 }
 
 .modal-footer {
@@ -440,6 +519,11 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #FFFEF0; /* 浅米黄色 */
+  border: 4px solid #8B7355; /* 像素边框 */
+  border-radius: 4px;
+  margin-top: 8px;
+  image-rendering: pixelated;
 }
 
 .modal-header-title {
@@ -448,11 +532,16 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Courier New', monospace; /* 像素字体 */
+  color: #8B7355; /* 棕色 */
 }
 
+/* 会话列表头像框 */
 .sessionlist-avatar {
   width: 30px;
   height: 30px;
   margin-right: 20px;
+  border-radius: 4px;
+  image-rendering: pixelated;
 }
 </style>
