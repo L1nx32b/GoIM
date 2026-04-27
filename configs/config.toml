@@ -1,17 +1,17 @@
 [mainConfig]
-appName = "Chat"
-host = "127.0.0.1"
+appName = "your app name"
+host = "address"
 port = 8000
 
 [mysqlConfig]
-host = "127.0.0.1"
+host = "address"
 port = 3306
-user = "L1nx32b"
-password = "1234"
-databaseName = "chat"
+user = "username"
+password = "password"
+databaseName = "database"
 
 [redisConfig]
-host = "127.0.0.1"
+host = "address"
 port = 6379
 password = ""
 db = 0
@@ -27,7 +27,7 @@ logPath = "./log"
 
 [kafkaConfig]
 messageMode = "channel"         # 消息模式 channel or kafka
-hostPort = "127.0.0.1:9092"     # "127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094" 多个kafka服务器
+hostPort = "address:9092"     # "127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094" 多个kafka服务器
 loginTopic = "login"
 chatTopic = "chat_message"
 logoutTopic = "logout"

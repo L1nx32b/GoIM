@@ -76,3 +76,23 @@ GoChatServer/
     │   └── store/                  # Vuex 状态管理
     └── package.json                # 前端依赖
 ```
+
+
+### 快速开始
+先修改/configs/config.toml的环境配置
+
+本地运行
+
+后端
+```
+$GOIM go mod tidy
+$GOIM go run cmd/server/main.go
+```
+
+前端
+如果后端配置文件的port端口有修改, 则需要修改web/chat-server/src/main.js文件(配置backendUrl{后端的地址} & wsUrl{后端ws连接的地址})
+```
+$GOIM cd web/chat-server
+$chat-server yarn install
+$chat-server yarn serve
+```
